@@ -1,0 +1,7 @@
+{
+  "name": "secure-form",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
