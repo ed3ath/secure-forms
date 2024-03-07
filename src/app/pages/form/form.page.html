@@ -1,0 +1,28 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Secure Form</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="bg-[#1E1E1E]">
+    <ion-list *ngFor="let form of formFields" class="p-4">
+      <ion-text class="text-md">{{form.category}}</ion-text>
+      <ion-item *ngFor="let input of form.fields">
+
+        <ion-input [name]="input.name" [label]="input.label" [type]="input.type" [required]="input.required"
+          class="text-md" [labelPlacement]="input.placement" [(ngModel)]="data[input.name]" class="text-md"
+          *ngIf="input.type !== 'checkbox' && input.type !== 'textarea';"></ion-input>
+
+        <ion-textarea [name]="input.name" [label]="input.label" [required]="input.required"
+          [labelPlacement]="input.placement" [(ngModel)]="data[input.name]" class="text-md" *ngIf="input.type === 'textarea'"></ion-textarea>
+
+        <ion-list *ngIf="input.type === 'checkbox'">
+          <ion-text>{{input.label}}</ion-text>
+          <ion-checkbox [name]="input.name" [(ngModel)]="data[input.name]" class="text-md mt-2"></ion-checkbox>
+        </ion-list>
+      </ion-item>
+    </ion-list>
+    <ion-button expand="block" class="p-4" (click)="submit()">Block</ion-button>
+  </div>
+</ion-content>
