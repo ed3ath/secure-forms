@@ -9,7 +9,10 @@ import { AuthService } from './services/auth.service';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  constructor(private storage: StorageService, private auth: AuthService) {}
+  constructor(
+    private storage: StorageService,
+    private auth: AuthService
+  ) {}
 
   async ngOnInit() {
     await this.storage.init();

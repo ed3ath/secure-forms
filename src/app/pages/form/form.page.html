@@ -1,5 +1,8 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="logout()"><ion-icon name="arrow-back-outline"></ion-icon></ion-button>
+    </ion-buttons>
     <ion-title>Secure Form</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -12,17 +15,20 @@
 
         <ion-input [name]="input.name" [label]="input.label" [type]="input.type" [required]="input.required"
           class="text-md" [labelPlacement]="input.placement" [(ngModel)]="data[input.name]" class="text-md"
-          *ngIf="input.type !== 'checkbox' && input.type !== 'textarea';" [disabled]="loading" (ionInput)="handleChange(input.name, $event)"></ion-input>
+          *ngIf="input.type !== 'checkbox' && input.type !== 'textarea';" [disabled]="loading || submitting"
+          (ionInput)="handleChange(input.name, $event)"></ion-input>
 
         <ion-textarea [name]="input.name" [label]="input.label" [required]="input.required"
-          [labelPlacement]="input.placement" [(ngModel)]="data[input.name]" class="text-md" *ngIf="input.type === 'textarea'" [disabled]="loading"></ion-textarea>
+          [labelPlacement]="input.placement" [(ngModel)]="data[input.name]" class="text-md"
+          *ngIf="input.type === 'textarea'" [disabled]="loading || submitting"></ion-textarea>
 
         <ion-list *ngIf="input.type === 'checkbox'">
           <ion-text>{{input.label}}</ion-text>
-          <ion-checkbox [name]="input.name" [(ngModel)]="data[input.name]" class="text-md mt-2" [disabled]="loading"></ion-checkbox>
+          <ion-checkbox [name]="input.name" [(ngModel)]="data[input.name]" class="text-md mt-2"
+            [disabled]="loading || submitting"></ion-checkbox>
         </ion-list>
       </ion-item>
     </ion-list>
-    <ion-button expand="block" class="p-4" (click)="submit()" [disabled]="loading">Submit</ion-button>
+    <ion-button expand="block" class="p-4" (click)="submit()" [disabled]="loading || submitting">Submit</ion-button>
   </div>
 </ion-content>

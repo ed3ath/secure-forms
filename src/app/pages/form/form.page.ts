@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import {
   CollectionReference,
   Firestore,
@@ -11,20 +11,21 @@ import {
   collectionChanges,
 } from '@angular/fire/firestore';
 import * as _ from 'lodash';
-import { map } from 'rxjs';
+import { ToastController } from '@ionic/angular';
 
 import { AuthService } from 'src/app/services/auth.service';
 import { CryptoService } from 'src/app/services/crypto.service';
+import { StorageService } from 'src/app/services/storage.service';
+import { EventService } from 'src/app/services/event.service';
 
 import { fields } from './fields';
-import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
   selector: 'app-form',
   templateUrl: './form.page.html',
   styleUrls: ['./form.page.scss'],
 })
-export class FormPage {
+export class FormPage implements OnInit, OnDestroy {
   private firestore: Firestore = inject(Firestore);
   formFields = fields;
   data: any;
@@ -32,17 +33,21 @@ export class FormPage {
   collection!: CollectionReference;
   docId!: string;
   loading = true;
+  submitting = false;
+  uid!: string;
 
   constructor(
     private auth: AuthService,
     private crypto: CryptoService,
-    private store: StorageService
+    private store: StorageService,
+    private toaster: ToastController,
+    private event: EventService
   ) {
     this.loading = true;
     if (!this.data) {
       const data: any = {};
       _.forEach(fields, (category) => {
-        _.forEach(category.fields, (field) => {
+        _.forEach(category.fields, (field: any) => {
           if (field.type === 'checkbox') {
             data[field.name] = field.default ?? false;
           } else {
@@ -53,9 +58,10 @@ export class FormPage {
       this.data = data;
       this.firebaseData = data;
     }
+  }
 
+  async ngOnInit() {
     this.collection = collection(this.firestore, `submitted-forms`);
-
 
     this.store.get('forms').then((data) => {
       if (data) {
@@ -63,36 +69,27 @@ export class FormPage {
       }
     });
 
+    this.uid = this.auth.user.uid;
+
     collectionData(this.collection, { idField: 'id' }).subscribe((data) => {
       this.processData(data);
     });
+  }
 
-    // collectionChanges(this.collection)
-    //   .pipe(
-    //     map((items) =>
-    //       items.map((item) => {
-    //         const data = item.doc.data();
-    //         return { id: item.doc.id, ...data };
-    //       })
-    //     )
-    //   )
-    //   .subscribe((data) => {
-    //     this.processData(data);
-    //   });
+  ngOnDestroy() {
+    this.event.destroy('session');
   }
 
   processData(data: any) {
-    const userData = _.find(data, (i: any) => i.uid === this.auth.user.uid);
+    const userData = _.find(data, (i: any) => i.uid === this.uid);
     if (userData) {
       this.firebaseData = this.decryptFields(userData);
-      console.log(this.firebaseData)
       _.forEach(_.keys(this.data), (key) => {
-        console.log(this.data[key])
         if (!this.data[key]) {
           this.data[key] = this.firebaseData[key];
         }
-      })
-      this.docId = data.id;
+      });
+      this.docId = userData.id;
     }
     this.loading = false;
   }
@@ -106,6 +103,9 @@ export class FormPage {
           'remotePassword',
           'iQUsername',
           'iQPassword',
+          'vpnAddress',
+          'vpnUsername',
+          'vpnPassword',
         ],
         (key) => {
           if (data[key]) {
@@ -127,6 +127,9 @@ export class FormPage {
           'remotePassword',
           'iQUsername',
           'iQPassword',
+          'vpnAddress',
+          'vpnUsername',
+          'vpnPassword',
         ],
         (key) => {
           if (data[key]) {
@@ -140,22 +143,30 @@ export class FormPage {
   }
 
   submit() {
-    this.loading = true;
-    let data = { ...this.data, uid: this.auth.user.uid };
+    this.submitting = true;
+    let data = { ...this.data, uid: this.uid };
     data = this.encryptFields(data);
     if (!this.docId) {
-      addDoc(this.collection, data).then(
-        (documentReference: DocumentReference) => {
-          console.log(documentReference);
-        }
-      ).finally(() => {
-        this.loading = false;
+      addDoc(this.collection, data).then(async () => {
+        await this.alert();
+        this.submitting = false;
       });
     } else {
-      updateDoc(doc(this.collection, this.docId), this.data).finally(() => {
-        this.loading = false;
+      updateDoc(doc(this.collection, this.docId), this.data).then(async () => {
+        await this.alert();
+        this.submitting = false;
       });
     }
+  }
+
+  async alert() {
+    const toast = await this.toaster.create({
+      message: 'Changes saved!',
+      duration: 2500,
+      position: 'bottom',
+    });
+
+    await toast.present();
   }
 
   saveLocalData() {
@@ -166,9 +177,12 @@ export class FormPage {
 
   handleChange(key: string, e: CustomEvent) {
     if (e.detail.value) {
-      console.log(e.detail.value)
-      this.data[key] = e.detail.value
+      this.data[key] = e.detail.value;
       this.saveLocalData();
     }
+  }
+
+  logout() {
+    this.auth.logout();
   }
 }

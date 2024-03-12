@@ -1,8 +1,10 @@
 import { Injectable, inject } from '@angular/core';
 import { Auth, GoogleAuthProvider, signInWithPopup } from '@angular/fire/auth';
 
-import { StorageService } from 'src/app/services/storage.service';
+import { StorageService } from './storage.service';
 import { CryptoService } from './crypto.service';
+import { EventService } from './event.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -12,9 +14,13 @@ export class AuthService {
   loggedIn = false;
   user: any = null;
 
+
+
   constructor(
     private storage: StorageService,
-    private crypto: CryptoService
+    private crypto: CryptoService,
+    private event: EventService,
+    private router: Router
   ) {}
 
   async login() {
@@ -28,6 +34,7 @@ export class AuthService {
         await this.storage.set('user', this.crypto.encrypt(JSON.stringify(user)));
         this.loggedIn = true;
         this.user = user;
+        this.event.publish('session', this.user);
       }
     } catch (e) {
       console.log(e);
@@ -36,6 +43,8 @@ export class AuthService {
 
   async logout() {
     this.auth.signOut();
+    await this.storage.remove('user');
+    this.router.navigate(['/login']);
   }
 
   async restore() {
@@ -43,6 +52,7 @@ export class AuthService {
     if (user) {
       this.loggedIn = true;
       this.user = JSON.parse(this.crypto.decrypt(user));
+      this.event.publish('session', this.user);
     }
   }
 }

@@ -4,7 +4,7 @@ export const fields = [
     fields: [
       {
         label: 'Name',
-        placement:"stacked",
+        placement: 'stacked',
         name: 'name',
         type: 'text',
         required: true,
@@ -12,7 +12,7 @@ export const fields = [
       },
       {
         label: 'Number',
-        placement:"stacked",
+        placement: 'stacked',
         name: 'phoneNo',
         type: 'tel',
         required: true,
@@ -20,7 +20,7 @@ export const fields = [
       },
       {
         label: 'Email',
-        placement:"stacked",
+        placement: 'stacked',
         name: 'email',
         type: 'email',
         required: true,
@@ -33,7 +33,7 @@ export const fields = [
     fields: [
       {
         label: 'Company Name',
-        placement:"stacked",
+        placement: 'stacked',
         name: 'companyName',
         type: 'text',
         required: true,
@@ -41,7 +41,7 @@ export const fields = [
       },
       {
         label: 'Trading As Name',
-        placement:"stacked",
+        placement: 'stacked',
         name: 'tradingAsName',
         type: 'text',
         required: false,
@@ -49,7 +49,7 @@ export const fields = [
       },
       {
         label: 'Company Registration Number',
-        placement:"stacked",
+        placement: 'stacked',
         name: 'companyRegNo',
         type: 'text',
         required: true,
@@ -57,7 +57,7 @@ export const fields = [
       },
       {
         label: 'Company VAT Number',
-        placement:"stacked",
+        placement: 'stacked',
         name: 'companyVATNo',
         type: 'text',
         required: false,
@@ -65,7 +65,7 @@ export const fields = [
       },
       {
         label: 'Company Billing Address',
-        placement:"stacked",
+        placement: 'stacked',
         name: 'companyBillingAddr',
         type: 'text',
         required: true,
@@ -73,7 +73,7 @@ export const fields = [
       },
       {
         label: 'Group Name',
-        placement:"stacked",
+        placement: 'stacked',
         name: 'groupName',
         type: 'text',
         required: false,
@@ -86,7 +86,7 @@ export const fields = [
     fields: [
       {
         label: 'Company/Individual Name',
-        placement:"stacked",
+        placement: 'stacked',
         name: 'supportName',
         type: 'text',
         required: false,
@@ -94,7 +94,7 @@ export const fields = [
       },
       {
         label: 'Contact Number',
-        placement:"stacked",
+        placement: 'stacked',
         name: 'supportPhoneNo',
         type: 'tel',
         required: false,
@@ -107,7 +107,7 @@ export const fields = [
     fields: [
       {
         label: 'Address',
-        placement:"stacked",
+        placement: 'stacked',
         name: 'remoteAddress',
         type: 'text',
         required: true,
@@ -115,7 +115,7 @@ export const fields = [
       },
       {
         label: 'Username',
-        placement:"stacked",
+        placement: 'stacked',
         name: 'remoteUsername',
         type: 'text',
         required: true,
@@ -123,10 +123,39 @@ export const fields = [
       },
       {
         label: 'Password',
-        placement:"stacked",
+        placement: 'stacked',
         name: 'remotePassword',
         type: 'password',
         required: true,
+        encrypt: true,
+      },
+    ],
+  },
+  {
+    category: 'VPN details (If applicable)',
+    fields: [
+      {
+        label: 'Address',
+        placement: 'stacked',
+        name: 'vpnAddress',
+        type: 'text',
+        required: false,
+        encrypt: true,
+      },
+      {
+        label: 'Username',
+        placement: 'stacked',
+        name: 'vpnUsername',
+        type: 'text',
+        required: false,
+        encrypt: true,
+      },
+      {
+        label: 'Password',
+        placement: 'stacked',
+        name: 'vpnPassword',
+        type: 'password',
+        required: false,
         encrypt: true,
       },
     ],
@@ -136,7 +165,7 @@ export const fields = [
     fields: [
       {
         label: 'Username',
-        placement:"stacked",
+        placement: 'stacked',
         name: 'iQUsername',
         type: 'text',
         required: true,
@@ -144,20 +173,21 @@ export const fields = [
       },
       {
         label: 'Password',
-        placement:"stacked",
+        placement: 'stacked',
         name: 'iQPassword',
         type: 'password',
         required: true,
         encrypt: true,
       },
       {
-        label: 'Please confirm if the API has been registered on your IQ for the company you are registering for',
-        placement: "stacked",
+        label:
+          'Please confirm if the API has been registered on your IQ for the company you are registering for',
+        placement: 'stacked',
         name: 'iQConfirm',
         type: 'checkbox',
         required: true,
         encrypt: false,
-        default: false
+        default: false,
       },
     ],
   },
