@@ -157,6 +157,7 @@ export const fields = [
         type: 'checkbox',
         required: true,
         encrypt: false,
+        default: false
       },
     ],
   },
