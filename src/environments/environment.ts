@@ -4,16 +4,16 @@
 
 export const environment = {
   production: false,
-  publicKey: "47644146cf79f61f5aaaea6879a7f5a0098792fae42f7d0bb90cd9a9eac664e7",
-  firebase: { // fill out firebase credentials
-    apiKey: 'AIzaSyAtyiq2YU8nnUCz5PHKUtv29-SqLMbUUrc',
-authDomain: 'form-e7ec6.firebaseapp.com',
-projectId: 'form-e7ec6',
-storageBucket: 'form-e7ec6.appspot.com',
-messagingSenderId: '394255220581',
-appId: '1:394255220581:web:a7bcb039379be64f3beb8c',
-measurementId: 'G-QMNCWTD4FX',
-
+  publicKey: '47644146cf79f61f5aaaea6879a7f5a0098792fae42f7d0bb90cd9a9eac664e7',
+  firebase: {
+    // fill out firebase credentials
+    apiKey: '',
+    authDomain: '',
+    projectId: '',
+    storageBucket: '',
+    messagingSenderId: '',
+    appId: '',
+    measurementId: '',
   },
 };
 

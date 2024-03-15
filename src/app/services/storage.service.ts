@@ -14,6 +14,9 @@ export class StorageService {
     // If using, define drivers here: await this.storage.defineDriver(/*...*/);
     const storage = await this.storage.create();
     this._storage = storage;
+    if (!await this.get('forms')) {
+      await this.set('forms', {});
+    }
   }
 
   // Create and expose methods that users of this service can

@@ -6,12 +6,11 @@ import {
   collectionData,
   updateDoc,
   addDoc,
-  DocumentReference,
   doc,
-  collectionChanges,
 } from '@angular/fire/firestore';
 import * as _ from 'lodash';
 import { ToastController } from '@ionic/angular';
+import { LoadingController } from '@ionic/angular';
 
 import { AuthService } from 'src/app/services/auth.service';
 import { CryptoService } from 'src/app/services/crypto.service';
@@ -32,18 +31,18 @@ export class FormPage implements OnInit, OnDestroy {
   firebaseData: any;
   collection!: CollectionReference;
   docId!: string;
-  loading = true;
   submitting = false;
   uid!: string;
+  loadingState!: any;
 
   constructor(
     private auth: AuthService,
     private crypto: CryptoService,
     private store: StorageService,
     private toaster: ToastController,
+    private loading: LoadingController,
     private event: EventService
   ) {
-    this.loading = true;
     if (!this.data) {
       const data: any = {};
       _.forEach(fields, (category) => {
@@ -58,18 +57,19 @@ export class FormPage implements OnInit, OnDestroy {
       this.data = data;
       this.firebaseData = data;
     }
+    this.setLoading().then((loading) => {
+      this.loadingState = loading;
+    });
   }
 
   async ngOnInit() {
+    this.uid = this.auth.user.uid;
     this.collection = collection(this.firestore, `submitted-forms`);
-
-    this.store.get('forms').then((data) => {
-      if (data) {
-        this.data = data;
+    await this.store.get('forms').then((data) => {
+      if (data && data[this.uid]) {
+        this.data = JSON.parse(this.crypto.decrypt(data[this.uid]));
       }
     });
-
-    this.uid = this.auth.user.uid;
 
     collectionData(this.collection, { idField: 'id' }).subscribe((data) => {
       this.processData(data);
@@ -91,7 +91,10 @@ export class FormPage implements OnInit, OnDestroy {
       });
       this.docId = userData.id;
     }
-    this.loading = false;
+    if (this.loadingState) {
+      this.loadingState.dismiss();
+      this.loadingState = null;
+    }
   }
 
   encryptFields(data: any) {
@@ -142,36 +145,29 @@ export class FormPage implements OnInit, OnDestroy {
     return data;
   }
 
-  submit() {
-    this.submitting = true;
+  async submit() {
+    const loading = await this.setLoading();
     let data = { ...this.data, uid: this.uid };
     data = this.encryptFields(data);
     if (!this.docId) {
       addDoc(this.collection, data).then(async () => {
-        await this.alert();
-        this.submitting = false;
+        await this.presentToast('Changes saved', 'success');
+        loading.dismiss();
       });
     } else {
       updateDoc(doc(this.collection, this.docId), this.data).then(async () => {
-        await this.alert();
-        this.submitting = false;
+        await this.presentToast('Changes saved', 'success');
+        loading.dismiss();
       });
     }
   }
 
-  async alert() {
-    const toast = await this.toaster.create({
-      message: 'Changes saved!',
-      duration: 2500,
-      position: 'bottom',
-    });
-
-    await toast.present();
-  }
-
   saveLocalData() {
     if (this.data) {
-      this.store.set('forms', this.data);
+      this.store.get('forms').then((forms) => {
+        forms[this.uid] = this.crypto.encrypt(JSON.stringify(this.data));
+        this.store.set('forms', forms);
+      });
     }
   }
 
@@ -184,5 +180,22 @@ export class FormPage implements OnInit, OnDestroy {
 
   logout() {
     this.auth.logout();
+  }
+
+  async setLoading() {
+    const loading = await this.loading.create();
+    await loading.present();
+    return loading;
+  }
+
+  async presentToast(message: string, color: string) {
+    const toast = await this.toaster.create({
+      message: message,
+      duration: 3500,
+      position: 'top',
+      color,
+    });
+
+    await toast.present();
   }
 }

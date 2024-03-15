@@ -26,6 +26,7 @@ export class RegisterPage implements OnInit {
 
   ngOnInit() {
     this.ionicForm = this.formBuilder.group({
+      name: ['', [Validators.required]],
       email: [
         '',
         [
@@ -63,10 +64,12 @@ export class RegisterPage implements OnInit {
   }
 
   async register() {
+    const { name, email, password } = this.ionicForm.value;
+    if (!name || !email || !password) return;
     const loading = await this.loading.create();
     await loading.present();
     this.auth
-      .register(this.ionicForm.value.email, this.ionicForm.value.password)
+      .register(name, email, password)
       .then(async () => {
         await this.presentToast(
           'An verification has been sent to your email',

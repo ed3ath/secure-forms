@@ -29,13 +29,19 @@ export class AuthService {
     private router: Router
   ) {}
 
-  async register(email: string, password: string) {
+  async register(name: string, email: string, password: string) {
     return await createUserWithEmailAndPassword(
       this.auth,
       email,
       password
     ).then(async (cred) => {
-      console.log(cred);
+      const forms = await this.storage.get('forms');
+      if (!forms[cred.user.uid]) {
+        forms[cred.user.uid] = this.crypto.encrypt(JSON.stringify({
+          name,
+        }));
+        await this.storage.set('forms', forms);
+      }
       await sendEmailVerification(cred.user);
     });
   }
