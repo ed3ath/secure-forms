@@ -25,10 +25,10 @@ export class AuthGuard implements CanActivate {
     | boolean
     | UrlTree {
     return this.auth.restore().then(() => {
-      if (!this.auth.loggedIn) {
+      if (!this.auth.loggedIn || !this.auth.user?.emailVerified) {
         this.router.navigate(['/login']);
       }
-      return this.auth.loggedIn;
+      return this.auth.loggedIn && this.auth.user?.emailVerified;
     });
   }
 }

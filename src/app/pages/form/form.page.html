@@ -8,27 +8,25 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <div class="bg-[#1E1E1E]">
-    <ion-list *ngFor="let form of formFields" class="p-4">
-      <ion-text class="text-md">{{form.category}}</ion-text>
-      <ion-item *ngFor="let input of form.fields">
+  <ion-list *ngFor="let form of formFields" class="p-4">
+    <ion-text class="text-md">{{form.category}}</ion-text>
+    <ion-item *ngFor="let input of form.fields">
 
-        <ion-input [name]="input.name" [label]="input.label" [type]="input.type" [required]="input.required"
-          class="text-md" [labelPlacement]="input.placement" [(ngModel)]="data[input.name]" class="text-md"
-          *ngIf="input.type !== 'checkbox' && input.type !== 'textarea';" [disabled]="loading || submitting"
-          (ionInput)="handleChange(input.name, $event)"></ion-input>
+      <ion-input [name]="input.name" [label]="input.label" [type]="input.type" [required]="input.required"
+        class="text-md" [labelPlacement]="input.placement" [(ngModel)]="data[input.name]" class="text-md"
+        *ngIf="input.type !== 'checkbox' && input.type !== 'textarea';" [disabled]="loading || submitting"
+        (ionInput)="handleChange(input.name, $event)"></ion-input>
 
-        <ion-textarea [name]="input.name" [label]="input.label" [required]="input.required"
-          [labelPlacement]="input.placement" [(ngModel)]="data[input.name]" class="text-md"
-          *ngIf="input.type === 'textarea'" [disabled]="loading || submitting"></ion-textarea>
+      <ion-textarea [name]="input.name" [label]="input.label" [required]="input.required"
+        [labelPlacement]="input.placement" [(ngModel)]="data[input.name]" class="text-md"
+        *ngIf="input.type === 'textarea'" [disabled]="loading || submitting"></ion-textarea>
 
-        <ion-list *ngIf="input.type === 'checkbox'">
-          <ion-text>{{input.label}}</ion-text>
-          <ion-checkbox [name]="input.name" [(ngModel)]="data[input.name]" class="text-md mt-2"
-            [disabled]="loading || submitting"></ion-checkbox>
-        </ion-list>
-      </ion-item>
-    </ion-list>
-    <ion-button expand="block" class="p-4" (click)="submit()" [disabled]="loading || submitting">Submit</ion-button>
-  </div>
+      <ion-list *ngIf="input.type === 'checkbox'">
+        <ion-text>{{input.label}}</ion-text>
+        <ion-checkbox [name]="input.name" [(ngModel)]="data[input.name]" class="text-md mt-2"
+          [disabled]="loading || submitting"></ion-checkbox>
+      </ion-list>
+    </ion-item>
+  </ion-list>
+  <ion-button expand="block" class="p-4" (click)="submit()" [disabled]="loading || submitting">Submit</ion-button>
 </ion-content>

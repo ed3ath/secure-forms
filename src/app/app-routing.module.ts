@@ -18,6 +18,14 @@ const routes: Routes = [
     loadChildren: () => import('./pages/form/form.module').then( m => m.FormPageModule),
     canActivate: [AuthGuard]
   },
+  {
+    path: 'register',
+    loadChildren: () => import('./pages/register/register.module').then( m => m.RegisterPageModule)
+  },
+  {
+    path: 'forgot-password',
+    loadChildren: () => import('./pages/forgot/forgot.module').then( m => m.ForgotPageModule)
+  },
 ];
 
 @NgModule({

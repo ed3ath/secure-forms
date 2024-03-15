@@ -1,5 +1,13 @@
 import { Injectable, inject } from '@angular/core';
-import { Auth, GoogleAuthProvider, signInWithPopup } from '@angular/fire/auth';
+import {
+  Auth,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+  sendPasswordResetEmail
+} from '@angular/fire/auth';
 
 import { StorageService } from './storage.service';
 import { CryptoService } from './crypto.service';
@@ -14,8 +22,6 @@ export class AuthService {
   loggedIn = false;
   user: any = null;
 
-
-
   constructor(
     private storage: StorageService,
     private crypto: CryptoService,
@@ -23,22 +29,51 @@ export class AuthService {
     private router: Router
   ) {}
 
-  async login() {
-    try {
-      const cred = await signInWithPopup(
-        this.auth,
-        new GoogleAuthProvider()
-      );
-      if (cred) {
-        const user = cred.user?.toJSON()
-        await this.storage.set('user', this.crypto.encrypt(JSON.stringify(user)));
+  async register(email: string, password: string) {
+    return await createUserWithEmailAndPassword(
+      this.auth,
+      email,
+      password
+    ).then(async (cred) => {
+      console.log(cred);
+      await sendEmailVerification(cred.user);
+    });
+  }
+
+  async login(email: string, password: string) {
+    return await signInWithEmailAndPassword(this.auth, email, password).then(
+      async (cred) => {
+        const user: any = cred.user?.toJSON();
+        if (!user.emailVerified) {
+          throw {
+            message: 'Email unverified',
+            code: 'auth/email-not-verified',
+          };
+        }
+        await this.storage.set(
+          'user',
+          this.crypto.encrypt(JSON.stringify(user))
+        );
         this.loggedIn = true;
         this.user = user;
         this.event.publish('session', this.user);
       }
-    } catch (e) {
-      console.log(e);
-    }
+    );
+  }
+
+  async loginWithGoogle() {
+    return await signInWithPopup(this.auth, new GoogleAuthProvider()).then(
+      async (cred) => {
+        const user = cred.user?.toJSON();
+        await this.storage.set(
+          'user',
+          this.crypto.encrypt(JSON.stringify(user))
+        );
+        this.loggedIn = true;
+        this.user = user;
+        this.event.publish('session', this.user);
+      }
+    );
   }
 
   async logout() {
@@ -54,5 +89,9 @@ export class AuthService {
       this.user = JSON.parse(this.crypto.decrypt(user));
       this.event.publish('session', this.user);
     }
+  }
+
+  async forgotPassword(email: string) {
+    return await sendPasswordResetEmail(this.auth, email);
   }
 }

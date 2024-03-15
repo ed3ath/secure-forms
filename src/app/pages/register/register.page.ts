@@ -8,11 +8,11 @@ import { AuthService } from 'src/app/services/auth.service';
 import { ErrorService } from 'src/app/services/error.service';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.page.html',
-  styleUrls: ['./login.page.scss'],
+  selector: 'app-register',
+  templateUrl: './register.page.html',
+  styleUrls: ['./register.page.scss'],
 })
-export class LoginPage implements OnInit {
+export class RegisterPage implements OnInit {
   ionicForm!: FormGroup;
 
   constructor(
@@ -24,7 +24,7 @@ export class LoginPage implements OnInit {
     public formBuilder: FormBuilder
   ) {}
 
-  async ngOnInit() {
+  ngOnInit() {
     this.ionicForm = this.formBuilder.group({
       email: [
         '',
@@ -33,34 +33,28 @@ export class LoginPage implements OnInit {
           Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,3}$'),
         ],
       ],
-      password: ['', [Validators.required]],
+      password: [
+        '',
+        [
+          Validators.pattern(
+            '(?=.*[a-z])(?=.*[A-Z])(?=.*[0-8])(?=.*[$@$!%*?&])[A-Za-zd$@$!%*?&].{8,}'
+          ),
+          Validators.required,
+        ],
+      ],
     });
   }
-
-  async login() {
-    const { email, password } = this.ionicForm.value;
-    if (!email || !password) return;
-
-    const loading = await this.setLoading();
-    this.auth
-      .login(email, password)
-      .then(async () => {
-        this.router.navigate(['/form']);
-      }).catch(async (e) => {
-        await this.presentToast(this.error.getErrorMessage(e.code), 'danger');
-      })
-      .finally(() => {
-        loading.dismiss();
-      });
+  get errorControl() {
+    return this.ionicForm.controls;
   }
-
-  async loginWithGoogle() {
+  async signUpWithGoogle() {
     const loading = await this.setLoading();
     this.auth
       .loginWithGoogle()
       .then(async () => {
         this.router.navigate(['/form']);
-      }).catch(async (e) => {
+      })
+      .catch(async (e) => {
         await this.presentToast(this.error.getErrorMessage(e.code), 'danger');
       })
       .finally(() => {
@@ -68,18 +62,24 @@ export class LoginPage implements OnInit {
       });
   }
 
-  get errorControl() {
-    return this.ionicForm.controls;
-  }
-
-  logout() {
-    this.auth.logout();
-  }
-
-  async setLoading() {
+  async register() {
     const loading = await this.loading.create();
     await loading.present();
-    return loading;
+    this.auth
+      .register(this.ionicForm.value.email, this.ionicForm.value.password)
+      .then(async () => {
+        await this.presentToast(
+          'An verification has been sent to your email',
+          'success'
+        );
+        this.router.navigate(['/login']);
+      })
+      .catch(async (e) => {
+        await this.presentToast(this.error.getErrorMessage(e.code), 'danger');
+      })
+      .finally(() => {
+        loading.dismiss();
+      });
   }
 
   async presentToast(message: string, color: string) {
@@ -91,5 +91,11 @@ export class LoginPage implements OnInit {
     });
 
     await toast.present();
+  }
+
+  async setLoading() {
+    const loading = await this.loading.create();
+    await loading.present();
+    return loading;
   }
 }

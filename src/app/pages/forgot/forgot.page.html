@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button routerLink="/login"><ion-icon name="arrow-back-outline"></ion-icon></ion-button>
+    </ion-buttons>
+    <ion-title>Forgot Password</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="mt-24 mb-20 text-center">
+    <ion-title class="text-3xl">Enter your email</ion-title>
+    <p class="text-gray-500 text-sm">To receive a reset password link</p>
+  </div>
+
+  <form [formGroup]="ionicForm" novalidate>
+    <div class="ion-padding">
+
+      <ion-item class="bg-gray-300 rounded-lg mb-4">
+        <ion-input type="text" placeholder="Email" formControlName="email"
+          class="font-light border-none bg-transparent" />
+        <ion-icon name="person-outline"></ion-icon>
+
+      </ion-item>
+
+      <div class="pt-[-26px] pb-[16px]"
+        *ngIf="this.ionicForm.controls?.email?.touched && this.ionicForm.controls?.email?.invalid">
+        <ion-text *ngIf="errorControl.email.errors?.required" class="text-red-500 font-light text-sm pt-4"
+          color="danger">Email is
+          required.</ion-text>
+        <ion-text *ngIf="errorControl.email.errors?.pattern" class="text-red-500 font-light text-sm pt-4"
+          color="danger">Please provide valid
+          email.</ion-text>
+      </div>
+
+      <div class="flex justify-center my-4">
+        <ion-button type="submit" (click)="send()" class="w-full">
+          Send
+        </ion-button>
+      </div>
+
+    </div>
+  </form>
+</ion-content>
