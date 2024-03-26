@@ -72,7 +72,7 @@ export class RegisterPage implements OnInit {
       .register(name, email, password)
       .then(async () => {
         await this.presentToast(
-          'An verification has been sent to your email',
+          'A verification has been sent to your email',
           'success'
         );
         this.router.navigate(['/login']);
