@@ -17,7 +17,9 @@ export class ErrorService {
     'auth/too-many-requests':
       'The number of requests exceeds the maximum allowed. Try again in a few minutes.',
     'auth/popup-closed-by-user': 'Login cancelled.',
-    'auth/email-not-verified': 'The provided email is not verified. Check your inbox/spam for email verification.'
+    'auth/email-not-verified':
+      'The provided email is not verified. Check your inbox/spam for email verification.',
+    'auth/weak-password': 'The password must be 6 characters long or more.',
   };
 
   constructor() {}

@@ -121,7 +121,7 @@
       },
       {
         "file": "src/app/app-routing.module.ts",
-        "hash": "9792795263166936132"
+        "hash": "12855333193902408978"
       },
       {
         "file": "src/app/app.component.html",
@@ -149,7 +149,31 @@
       },
       {
         "file": "src/app/guards/auth.guard.ts",
-        "hash": "4235235713468173182"
+        "hash": "7904838193505911125"
+      },
+      {
+        "file": "src/app/pages/forgot/forgot-routing.module.ts",
+        "hash": "15592264359829869292"
+      },
+      {
+        "file": "src/app/pages/forgot/forgot.module.ts",
+        "hash": "9355264308067487243"
+      },
+      {
+        "file": "src/app/pages/forgot/forgot.page.html",
+        "hash": "480718280075604731"
+      },
+      {
+        "file": "src/app/pages/forgot/forgot.page.scss",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "src/app/pages/forgot/forgot.page.spec.ts",
+        "hash": "7140857418558379768"
+      },
+      {
+        "file": "src/app/pages/forgot/forgot.page.ts",
+        "hash": "16113358291427219691"
       },
       {
         "file": "src/app/pages/form/fields.ts",
@@ -165,7 +189,7 @@
       },
       {
         "file": "src/app/pages/form/form.page.html",
-        "hash": "9863427739845301578"
+        "hash": "13419716195103645626"
       },
       {
         "file": "src/app/pages/form/form.page.scss",
@@ -177,7 +201,7 @@
       },
       {
         "file": "src/app/pages/form/form.page.ts",
-        "hash": "10624059098815375127"
+        "hash": "16661143857147523796"
       },
       {
         "file": "src/app/pages/login/login-routing.module.ts",
@@ -185,11 +209,11 @@
       },
       {
         "file": "src/app/pages/login/login.module.ts",
-        "hash": "17712010613817365668"
+        "hash": "16476016350583373645"
       },
       {
         "file": "src/app/pages/login/login.page.html",
-        "hash": "15953532224008982203"
+        "hash": "7326411772962469181"
       },
       {
         "file": "src/app/pages/login/login.page.scss",
@@ -201,7 +225,31 @@
       },
       {
         "file": "src/app/pages/login/login.page.ts",
-        "hash": "4061708327766401719"
+        "hash": "2844053103179013861"
+      },
+      {
+        "file": "src/app/pages/register/register-routing.module.ts",
+        "hash": "6460169682535667979"
+      },
+      {
+        "file": "src/app/pages/register/register.module.ts",
+        "hash": "13682117717902840076"
+      },
+      {
+        "file": "src/app/pages/register/register.page.html",
+        "hash": "7261656234989470422"
+      },
+      {
+        "file": "src/app/pages/register/register.page.scss",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "src/app/pages/register/register.page.spec.ts",
+        "hash": "11091268829114787836"
+      },
+      {
+        "file": "src/app/pages/register/register.page.ts",
+        "hash": "13963393009101328533"
       },
       {
         "file": "src/app/services/auth.service.spec.ts",
@@ -209,7 +257,7 @@
       },
       {
         "file": "src/app/services/auth.service.ts",
-        "hash": "18162186798299380902"
+        "hash": "111827683911539500"
       },
       {
         "file": "src/app/services/crypto.service.spec.ts",
@@ -218,6 +266,14 @@
       {
         "file": "src/app/services/crypto.service.ts",
         "hash": "11997864729803399883"
+      },
+      {
+        "file": "src/app/services/error.service.spec.ts",
+        "hash": "10216144193648390894"
+      },
+      {
+        "file": "src/app/services/error.service.ts",
+        "hash": "15096828215105012098"
       },
       {
         "file": "src/app/services/event.service.spec.ts",
@@ -233,7 +289,7 @@
       },
       {
         "file": "src/app/services/storage.service.ts",
-        "hash": "14392370264382875377"
+        "hash": "6961935007141353607"
       },
       {
         "file": "src/assets/icon/favicon.png",
@@ -249,7 +305,7 @@
       },
       {
         "file": "src/environments/environment.ts",
-        "hash": "10301266122988850092"
+        "hash": "15242230985431301808"
       },
       {
         "file": "src/global.scss",
@@ -273,7 +329,7 @@
       },
       {
         "file": "src/theme/variables.scss",
-        "hash": "1534355311665885715"
+        "hash": "10614172712421673418"
       },
       {
         "file": "src/zone-flags.ts",
@@ -289,7 +345,7 @@
       },
       {
         "file": "tsconfig.json",
-        "hash": "9300148005582941852"
+        "hash": "6572257926211765177"
       },
       {
         "file": "tsconfig.spec.json",

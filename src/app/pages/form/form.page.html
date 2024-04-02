@@ -1,9 +1,9 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-button (click)="logout()"><ion-icon name="arrow-back-outline"></ion-icon></ion-button>
+    <ion-title>{{data.name || ''}}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()"><ion-icon name="log-out-outline" title="Logout"></ion-icon></ion-button>
     </ion-buttons>
-    <ion-title>Secure Form</ion-title>
   </ion-toolbar>
 </ion-header>
 
